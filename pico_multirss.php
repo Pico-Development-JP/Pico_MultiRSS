@@ -64,6 +64,11 @@ class Pico_MultiRSS {
           array_push($new_pages, $page);
         }
       }
+      $updated = array();
+      foreach($new_pages as $key => $val){
+        $updated[$key] = $val["date"];
+      }
+      array_multisort($updated, SORT_DESC, $new_pages);
       $pages = array_slice($new_pages, 0, $this->channel['count']);
     }
   }
