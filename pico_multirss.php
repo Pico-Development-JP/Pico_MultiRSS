@@ -55,13 +55,24 @@ class Pico_MultiRSS {
     // 該当チャンネルがあれば処理
     if($this->channel){
       $new_pages = array();
-      $c = strlen($this->base_url);
-      $l = strlen($this->channel['directory']);
       foreach($pages as $page){
-        $path = substr($page["url"], $c, $l);
-        // 対象ディレクトリ配下？
-        if($this->channel['directory'] == $path && isset($page["date"])){
-          array_push($new_pages, $page);
+        $path = substr($page["url"], strlen($this->base_url));
+        if(!empty($page["date"])){
+          if(is_array($this->channel['directory'])){
+            // 配列の場合、各キーとパスを照合
+            foreach($this->channel['directory'] as $key => $value){
+              if(substr($path, 0, strlen($key)) == $key){
+                $page["title"] = $value . $page["title"];
+                array_push($new_pages, $page);
+              }
+            }
+          }else{
+            // 文字列の場合、ディレクトリとパスを照合
+            $s = $this->channel['directory'];
+            if(substr($path, 0, strlen($s)) == $s){
+              array_push($new_pages, $page);
+            }
+          }
         }
       }
       $updated = array();
