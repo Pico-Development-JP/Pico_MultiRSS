@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site_title }}</title>
+    <link>{{ base_url }}/</link>
+    {% if channel.description %}<description>{{ channel.description }}</description>{% endif %}
+    {% if language %}<language>{{ language }}</language>{% endif %}
+    {% if copyright %}<copyright>{{ copyright }}</copyright>{% endif %}
+    {% if webmaster %}<webMaster>{{ webmaster }}</webMaster>{% endif %}
+    {% if category %}<category>{{ category }}</category>{% endif %}
+    <generator>{{ generator }}</generator>
+    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+    {% for page in pages %}
+      <item>
+        <title>{{ page.title }}</title>
+        <link>{{ page.url }}</link>
+        <guid>{{ page.url }}</guid>
+        <pubDate>{{ page.date|date("D, d M Y H:i:s O") }}</pubDate>
+        <description><![CDATA[{{ page.content }}]]></description>
+      </item>
+    {% endfor %}
+  </channel>
+</rss>
