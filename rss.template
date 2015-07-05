@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site_title }}</title>
+    {% if channel.title %}
+      <title>{{ channel.title }}</title>
+    {% else %}
+      <title>{{ site_title }}</title>
+    {% endif %}
     <link>{{ base_url }}/</link>
     {% if channel.description %}<description>{{ channel.description }}</description>{% endif %}
     {% if language %}<language>{{ language }}</language>{% endif %}
