@@ -13,7 +13,11 @@
     {% for page in pages %}
       <item>
         <title>{{ page.title }}</title>
-        <link>{{ page.url }}</link>
+        {% if page.attachurl %}
+          <link>{{ page.attachurl|first.url }}</link>
+        {% else %}
+          <link>{{ page.url }}</link>
+        {% endif %}
         <guid>{{ page.url }}</guid>
         <pubDate>{{ page.date|date("D, d M Y H:i:s O") }}</pubDate>
         <description><![CDATA[{{ page.content }}]]></description>
