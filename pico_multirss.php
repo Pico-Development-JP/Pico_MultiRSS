@@ -64,7 +64,7 @@ class Pico_MultiRSS {
           array_push($new_pages, $page);
         }
       }
-      $pages = array_slice($new_pages, 0, 10);
+      $pages = array_slice($new_pages, 0, $this->channel['count']);
     }
   }
 
