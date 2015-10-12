@@ -29,7 +29,8 @@ class Pico_MultiRSS {
    */
   private function check($path, $directory)
   {
-    return substr($path, 0, strlen($directory)) == $directory;
+    return substr($path, 0, strlen($directory)) == $directory && 
+      (!$this->channel['nosubdir'] || strpos(substr($path, strlen($directory)), "/") === FALSE);
   }
   
   public function config_loaded(&$settings)
