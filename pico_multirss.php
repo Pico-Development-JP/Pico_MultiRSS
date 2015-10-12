@@ -18,6 +18,20 @@ class Pico_MultiRSS {
   
   private $channel;
 
+  /**
+   * ファイルパスが指定されたディレクトリ配下のファイルを示しているかどうかを確認する
+   * 
+   * $path ... ファイルパス
+   * $directory ... 確認するディレクトリパス
+   * return ... ファイルパスが指定したディレクトリ配下のファイルを示す場合true
+   *          チャンネルパラメータnosubdirがtrueの場合、指定ディレクトリのファイルのときのみtrue
+   *
+   */
+  private function check($path, $directory)
+  {
+    return substr($path, 0, strlen($directory)) == $directory;
+  }
+  
   public function config_loaded(&$settings)
   {
     $this->rss = array(
@@ -61,7 +75,7 @@ class Pico_MultiRSS {
           if(is_array($this->channel['directory'])){
             // 配列の場合、各キーとパスを照合
             foreach($this->channel['directory'] as $key => $value){
-              if(substr($path, 0, strlen($key)) == $key){
+              if($this->check($path, $key)){
                 $page["title"] = $value . $page["title"];
                 array_push($new_pages, $page);
               }
@@ -69,7 +83,7 @@ class Pico_MultiRSS {
           }else{
             // 文字列の場合、ディレクトリとパスを照合
             $s = $this->channel['directory'];
-            if(substr($path, 0, strlen($s)) == $s){
+            if($this->check($path, $s)){
               array_push($new_pages, $page);
             }
           }
