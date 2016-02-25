@@ -8,7 +8,9 @@
  * @license http://opensource.org/licenses/MIT
  * @version 1.0
  */
-class Pico_MultiRSS {
+class Pico_MultiRSS extends AbstractPicoPlugin {
+
+  protected $enabled = false;
 
   private $baseurl;
   
@@ -29,11 +31,14 @@ class Pico_MultiRSS {
    */
   private function check($path, $directory)
   {
+    $path = "/" . $path; // 互換性維持のため。
+    $nosubdir = FALSE;
+    if(isset($this->channel['nosubdir'])) $nosubdir = $this->channel['nosubdir'];
     return substr($path, 0, strlen($directory)) == $directory && 
-      (!$this->channel['nosubdir'] || strpos(substr($path, strlen($directory)), "/") === FALSE);
+      (!$nosubdir || strpos(substr($path, strlen($directory)), "/") === FALSE);
   }
   
-  public function config_loaded(&$settings)
+  public function onConfigLoaded(array &$config)
   {
     $this->rss = array(
       'generator' => 'Pico',
@@ -45,15 +50,15 @@ class Pico_MultiRSS {
         )
       ),
     );
-    $this->base_url = $settings['base_url'];
+    $this->base_url = $config['base_url'];
     $this->plugin_path = dirname(__FILE__);
-    if(isset($settings['multirss'])){
-      $this->rss += $settings['multirss'];
-      $this->rss['channel'] = $settings['multirss']['channel'];
+    if(isset($config['multirss'])){
+      $this->rss += $config['multirss'];
+      $this->rss['channel'] = $config['multirss']['channel'];
     }
   }
 
-  public function request_url(&$url)
+  public function onRequestUrl(&$url)
   {
     $channels = $this->rss["channel"];
     // 該当するチャンネルを探す
@@ -65,7 +70,12 @@ class Pico_MultiRSS {
     }
   }
 
-  public function get_pages(&$pages, &$current_page, &$prev_page, &$next_page)
+  public function onPagesLoaded(
+      array &$pages,
+      array &$currentPage = null,
+      array &$previousPage = null,
+      array &$nextPage = null
+  )
   {
     // 該当チャンネルがあれば処理
     if($this->channel){
@@ -99,17 +109,17 @@ class Pico_MultiRSS {
     }
   }
 
-  public function before_render(&$twig_vars, &$twig, &$template)
+  public function onPageRendering(Twig_Environment &$twig, array &$twigVariables, &$templateName)
   {
     // from https://github.com/gilbitron/Pico-RSS-Plugin/blob/master/pico_rss/pico_rss.php#L34
 		if($this->channel){
 			header($_SERVER['SERVER_PROTOCOL'].' 200 OK');
 			header("Content-Type: application/rss+xml; charset=UTF-8");
 			$loader = new Twig_Loader_Filesystem($this->plugin_path);
-			$twig_rss = new Twig_Environment($loader, $twig_vars['config']['twig_config']);
+			$twig_rss = new Twig_Environment($loader, $twigVariables['config']['twig_config']);
 			$this->rss['channel'] = $this->channel;
-			$twig_vars += $this->rss;
-			echo $twig_rss->render('rss.template', $twig_vars);
+			$twigVariables += $this->rss;
+			echo $twig_rss->render('rss.template', $twigVariables);
 			exit;
 		}
   }
