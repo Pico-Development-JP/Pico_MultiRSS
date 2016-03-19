@@ -119,7 +119,7 @@ class Pico_MultiRSS extends AbstractPicoPlugin {
 			$twig_rss = new Twig_Environment($loader, $twigVariables['config']['twig_config']);
 			$this->rss['channel'] = $this->channel;
 			$twigVariables += $this->rss;
-			echo $twig_rss->render('rss.template', $twigVariables);
+			echo $twig_rss->render('rss.twig', $twigVariables);
 			exit;
 		}
   }
