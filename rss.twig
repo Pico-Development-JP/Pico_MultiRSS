@@ -24,7 +24,7 @@
         {% endif %}
         <guid>{{ page.url }}</guid>
         <pubDate>{{ page.date|date("D, d M Y H:i:s O") }}</pubDate>
-        <description><![CDATA[{{ page.content }}]]></description>
+        <description><![CDATA[{{ page.description }}]]></description>
       </item>
     {% endfor %}
   </channel>
