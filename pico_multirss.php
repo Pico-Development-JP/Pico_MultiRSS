@@ -6,9 +6,11 @@
  * @author TakamiChie
  * @link http://onpu-tamago.net/
  * @license http://opensource.org/licenses/MIT
- * @version 1.0
+ * @version 1.1
  */
 class Pico_MultiRSS extends AbstractPicoPlugin {
+
+  const API_VERSION = 2;
 
   protected $enabled = false;
 
@@ -70,12 +72,7 @@ class Pico_MultiRSS extends AbstractPicoPlugin {
     }
   }
 
-  public function onPagesLoaded(
-      array &$pages,
-      array &$currentPage = null,
-      array &$previousPage = null,
-      array &$nextPage = null
-  )
+  public function onPagesLoaded(array &$pages)
   {
     // 該当チャンネルがあれば処理
     if($this->channel){
@@ -109,7 +106,7 @@ class Pico_MultiRSS extends AbstractPicoPlugin {
     }
   }
 
-  public function onPageRendering(Twig_Environment &$twig, array &$twigVariables, &$templateName)
+  public function onPageRendering(&$templateName, array &$twigVariables)
   {
     // from https://github.com/gilbitron/Pico-RSS-Plugin/blob/master/pico_rss/pico_rss.php#L34
 		if($this->channel){
