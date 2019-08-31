@@ -1,13 +1,17 @@
 # pico-multirss
+
 サイトのRSS(RDF site summary)を作成するプラグインです。記事のフォルダを指定して、特定の記事のみのRSSを出力するなど、柔軟な設定が可能です。
 
 ## テンプレートに追加する値
+
 なし
  
 ##  追加するTwig変数
+
 なし
 
 ##  コンフィグオプション
+
  * $config['multirss']['language']: RSSに表示する「RSSの言語」を指定します。指定しなかった場合は表示されません。
  * $config['mailform']['copyright']：RSSに表示する「サイトのコピーライト」を指定します。指定しなかった場合は表示されません。
  * $config['mailform']['webmaster']：RSSに表示する「ウェブマスター情報」を指定します。指定しなかった場合は表示されません。
