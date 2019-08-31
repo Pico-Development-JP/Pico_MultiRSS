@@ -2,6 +2,12 @@
 
 サイトのRSS(RDF site summary)を作成するプラグインです。記事のフォルダを指定して、特定の記事のみのRSSを出力するなど、柔軟な設定が可能です。
 
+## 使用方法
+
+1. プラグインをダウンロードし、`plugins`フォルダに`Pico_MultiRSS`というフォルダ名で保存する
+2. `config/config.yml`に、`Pico_MultiRSS.enabled: true`という行を書き加える
+3. `config/config.yml`出力したいRSSに対応した設定を行う(以下コンフィグオプション参照)
+
 ## テンプレートに追加する値
 
 なし
